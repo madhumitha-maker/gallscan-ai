@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GallScan AI — Explainable Deep Learning for Gallbladder Ultrasound</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Injected Shared Clinical Disclaimer -->
+  <div id="disclaimer-root"></div>
+
+  <!-- Injected Shared Header Navigation & Mobile Drawer -->
+  <div id="navbar-root"></div>
+
+  <!-- Hero Section -->
+  <main class="main-content">
+    <section style="background: linear-gradient(180deg, #ffffff 0%, #f8fafa 100%); border-bottom: 1px solid var(--border-light); padding: 56px 0;">
+      <div class="container" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;">
+        <div>
+          <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+            <span class="badge badge-navy">Mendeley Gallbladder v2</span>
+            <span class="badge badge-teal">CNN + Vision Transformer Fusion</span>
+            <span class="badge badge-teal">Live Grad-CAM Explainability</span>
+          </div>
+
+          <h1 style="font-size: 36px; line-height: 1.2; margin-bottom: 20px; font-weight: 800; color: var(--primary-navy);">
+            Explainable Radiological AI for Automated Gallbladder Pathology Classification
+          </h1>
+
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; max-width: 600px;">
+            Harnessing multimodal neural representation (EfficientNet-B0 + ViT-Small) across 10,692 clinical ultrasound scans. GallScan AI delivers multi-class differential diagnostics with transparent spatial attention maps.
+          </p>
+
+          <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+            <a href="upload.html" class="btn btn-accent btn-lg">
+              <span class="material-symbols-outlined">biotech</span> Launch Scan Analysis
+            </a>
+            <a href="history.html" class="btn btn-outline btn-lg">
+              <span class="material-symbols-outlined">folder_open</span> Scan Archives
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="padding: 24px; border: 2px solid var(--border-light); box-shadow: var(--shadow-lg);">
+            <div class="label-caps" style="margin-bottom: 12px; color: var(--secondary-teal);">Architecture Overview</div>
+            <div style="background: var(--surface-low); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 16px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8;">
+              <div style="color: var(--primary-navy); font-weight: 700;">[INPUT] Ultrasound Scan (224x224 RGB)</div>
+              <div style="margin-left: 12px; color: var(--text-muted);">&bull; EfficientNet-B0 (Spatial Feature Map &rarr; 1280-d)</div>
+              <div style="margin-left: 12px; color: var(--text-muted);">&bull; ViT-Small/16 (Global Self-Attention &rarr; 384-d)</div>
+              <div style="margin-left: 12px; color: var(--secondary-teal); font-weight: 600;">&bull; Feature Concat + BatchNorm + ReLU (1664 &rarr; 256-d)</div>
+              <div style="color: var(--primary-navy); font-weight: 700;">[OUTPUT] 9 Gallbladder Diagnostic Classes + Grad-CAM</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); padding-top: 12px; border-top: 1px solid var(--border-light);">
+              <span><strong>Inference:</strong> ONNX Runtime</span>
+              <span><strong>Explainability:</strong> PyTorch Hooks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 Pathology Classes Section -->
+    <section class="container" style="padding: 56px 24px;">
+      <div style="text-align: center; max-width: 720px; margin: 0 auto 40px auto;">
+        <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 8px;">Diagnostic Taxonomy</div>
+        <h2 style="font-size: 28px; margin-bottom: 12px;">9 Supported Radiological Conditions</h2>
+        <p style="font-size: 14px; color: var(--text-muted);">
+          Trained on clinical ultrasound scans encompassing benign, inflammatory, acute, and malignant biliary conditions.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-navy">Class 1</span>
+            <h4 style="font-size: 15px;">Gallstones (Cholelithiasis)</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Acoustic shadowing with hyperechoic mobile or impacted calculi within the lumen.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-teal">Class 2</span>
+            <h4 style="font-size: 15px;">Abdomen & Retroperitoneum</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Normal baseline parenchyma and adjacent abdominal anatomical scans.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-warning">Class 3</span>
+            <h4 style="font-size: 15px;">Cholecystitis (Acute/Chronic)</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Wall thickening, distension, pericholecystic fluid, and positive sonographic Murphy sign.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-danger">Class 4</span>
+            <h4 style="font-size: 15px;">Gangrenous & Membranous</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Intraluminal sloughed membranes, asymmetrical mucosal ulceration and ischemic necrosis.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-danger">Class 5</span>
+            <h4 style="font-size: 15px;">Gallbladder Perforation</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Discontinuous gallbladder wall with pericholecystic abscess and peritoneal effusion.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-teal">Class 6</span>
+            <h4 style="font-size: 15px;">Polyps & Crystals</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Fixed non-shadowing intraluminal mucosal projections and comet-tail reverberations.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-navy">Class 7</span>
+            <h4 style="font-size: 15px;">Adenomyomatosis</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Hyperplastic mural changes with Rokitansky-Aschoff intramural cystic diverticula.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-danger">Class 8</span>
+            <h4 style="font-size: 15px;">Gallbladder Carcinoma</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Malignant polypoid or infiltrating mass replacing the gallbladder lumen with hepatic invasion.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span class="badge badge-warning">Class 9</span>
+            <h4 style="font-size: 15px;">Wall Thickening (Various)</h4>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted);">Non-specific reactive mural edema secondary to hepatic, cardiac, or renal etiology.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="material-symbols-outlined" style="color: var(--secondary-teal);">radiology</span>
+          <strong>GallScan AI Diagnostic Tool</strong>
+        </div>
+        <div style="display: flex; gap: 16px; font-size: 12px;">
+          <a href="upload.html" style="color: var(--text-muted); text-decoration: none;">Upload</a>
+          <a href="history.html" style="color: var(--text-muted); text-decoration: none;">Archives</a>
+          <a href="profile.html" style="color: var(--text-muted); text-decoration: none;">Profile</a>
+        </div>
+      </div>
+      <div class="footer-disclaimer">
+        <strong>Academic & Educational Notice:</strong> This software is part of research titled <em>"An Explainable Deep Learning-Based Multimodal System for Automated Detection and Classification of Gallbladder Diseases from Radiological Scans"</em>. It is not approved as an independent diagnostic medical system. All predictions require clinical corroboration.
+      </div>
+    </div>
+  </footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>

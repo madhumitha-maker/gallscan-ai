@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic Report & Explainability — GallScan AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    @media print {
+      .app-header, .btn, .disclaimer-banner, .icon-btn, #modeSideBySide, #modeOverlay, .no-print, .mobile-drawer {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+      }
+      .card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+      }
+      .container {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Injected Shared Clinical Disclaimer -->
+  <div id="disclaimer-root"></div>
+
+  <!-- Injected Shared Header Navigation & Mobile Drawer -->
+  <div id="navbar-root"></div>
+
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Loading State -->
+      <div id="resultLoading" style="text-align: center; padding: 60px 0;">
+        <span class="material-symbols-outlined" style="font-size: 36px; animation: spin 1s linear infinite; color: var(--secondary-teal);">sync</span>
+        <div style="margin-top: 16px; font-weight: 600; color: var(--primary-navy);">Loading Diagnostic Records from Database...</div>
+      </div>
+
+      <!-- Result Content -->
+      <div id="resultContent" style="display: none;">
+        
+        <!-- Header Actions & Meta -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 4px;">Diagnostic Report</div>
+            <h1 id="resultFilename" style="font-size: 24px; color: var(--primary-navy);">ultrasound_scan.png</h1>
+            <div id="resultDate" class="mono-text" style="font-size: 12px; color: var(--text-light); margin-top: 2px;">--</div>
+          </div>
+
+          <div style="display: flex; gap: 10px;" class="no-print">
+            <button id="btnPrintReport" class="btn btn-outline btn-sm">
+              <span class="material-symbols-outlined">print</span> Print / Export PDF
+            </button>
+            <a href="upload.html" class="btn btn-primary btn-sm">
+              <span class="material-symbols-outlined">add_photo_alternate</span> New Analysis
+            </a>
+          </div>
+        </div>
+
+        <div class="grid-2" style="grid-template-columns: 1.1fr 0.9fr; gap: 24px; align-items: start; margin-bottom: 24px;">
+          
+          <!-- Primary Outcome & Top-3 Differential -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="card" style="border-left: 5px solid var(--secondary-teal); box-shadow: var(--shadow-md);">
+              <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 8px;">Primary Classification Outcome</div>
+              <h2 id="resultTopClass" style="font-size: 22px; color: var(--primary-navy); margin-bottom: 8px;">--</h2>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                <span id="resultTopConfidence" class="mono-text" style="font-size: 18px; font-weight: 800; color: var(--secondary-teal);">0.0% Confidence</span>
+                <span id="resultTopBadge" class="badge badge-teal">--</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+                Inference computed via fused EfficientNet-B0 spatial convolutions and Vision Transformer multi-head attention.
+              </p>
+            </div>
+
+            <!-- Top 3 Differential Diagnoses -->
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">
+                  <span class="material-symbols-outlined" style="color: var(--secondary-teal);">equalizer</span> Top 3 Differential Diagnoses
+                </span>
+                <span class="badge badge-navy">Ambiguity Management</span>
+              </div>
+              <div id="top3PredictionsList"></div>
+            </div>
+          </div>
+
+          <!-- Grad-CAM Visualizer Card -->
+          <div class="card" style="box-shadow: var(--shadow-md);">
+            <div class="card-header">
+              <span class="card-title">
+                <span class="material-symbols-outlined" style="color: var(--secondary-teal);">visibility</span> Spatial Attention (Grad-CAM)
+              </span>
+              <div style="display: flex; gap: 6px;" class="no-print">
+                <button id="modeSideBySide" class="btn btn-primary btn-sm" style="padding: 4px 10px;">Side-by-Side</button>
+                <button id="modeOverlay" class="btn btn-outline btn-sm" style="padding: 4px 10px;">Overlay</button>
+              </div>
+            </div>
+
+            <!-- Side-by-Side View -->
+            <div id="viewSideBySide" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div style="text-align: center;">
+                <div class="label-caps" style="margin-bottom: 6px;">Original Scan</div>
+                <img id="resultOrigImg" src="" alt="Original Scan" style="width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-light); aspect-ratio: 1; object-fit: cover;">
+              </div>
+              <div style="text-align: center;">
+                <div class="label-caps" style="margin-bottom: 6px; color: var(--secondary-teal);">CNN Grad-CAM Heatmap</div>
+                <img id="resultGradcamImg" src="" alt="Grad-CAM Heatmap" style="width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-light); aspect-ratio: 1; object-fit: cover;">
+              </div>
+            </div>
+
+            <!-- Overlay View -->
+            <div id="viewOverlay" style="display: none; flex-direction: column; align-items: center;">
+              <div style="position: relative; width: 100%; max-width: 380px; aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-light);">
+                <img id="overlayOrigImg" src="" alt="Original Scan" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+                <img id="overlayHeatmapImg" src="" alt="Grad-CAM Overlay" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.7; mix-blend-mode: multiply;">
+              </div>
+
+              <div style="width: 100%; max-width: 380px; margin-top: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                  <span class="label-caps">Heatmap Opacity</span>
+                  <span id="opacityVal" class="mono-text">70%</span>
+                </div>
+                <input type="range" id="heatmapOpacitySlider" min="0" max="100" value="70" style="width: 100%;">
+              </div>
+            </div>
+
+            <div style="margin-top: 16px; font-size: 12px; color: var(--text-light); line-height: 1.5; border-top: 1px solid var(--surface-container); padding-top: 12px;">
+              <strong>Interpretation Note:</strong> Warm colors (red/yellow) indicate radiological regions of interest that most significantly activated the CNN convolutional feature extractor (<code>conv_head</code>).
+            </div>
+          </div>
+        </div>
+
+        <!-- Full 9-Class Distribution Table -->
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="material-symbols-outlined" style="color: var(--secondary-teal);">table_chart</span> Full 9-Class Pathology Probability Distribution
+            </span>
+            <span class="badge badge-teal">Complete Softmax Output</span>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pathology Condition</th>
+                  <th style="text-align: right;">Probability</th>
+                  <th>Visual Distribution</th>
+                </tr>
+              </thead>
+              <tbody id="fullClassTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-disclaimer" style="text-align: center;">
+        GallScan AI &copy; 2026. For academic & research evaluation only. Not an independent medical diagnosis.
+      </div>
+    </div>
+  </footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/result.js"></script>
+</body>
+</html>

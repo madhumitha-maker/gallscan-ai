@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gallscan_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gallscan_user
+      POSTGRES_PASSWORD: gallscan_password
+      POSTGRES_DB: gallscan_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gallscan_backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://gallscan_user:gallscan_password@postgres:5432/gallscan_db
+      - SECRET_KEY=gallscan-ai-super-secret-jwt-key-2026-secure-token
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/artifacts:/app/artifacts
+
+volumes:
+  postgres_data:

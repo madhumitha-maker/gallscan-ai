@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "public": false,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/(index|upload|result|history|profile|notifications|login|signup|forgot-password)",
+      "destination": "/frontend/$1.html"
+    },
+    {
+      "source": "/client/:path*",
+      "destination": "/frontend/:path*"
+    },
+    {
+      "source": "/components/:path*",
+      "destination": "/frontend/components/:path*"
+    },
+    {
+      "source": "/css/:path*",
+      "destination": "/frontend/css/:path*"
+    },
+    {
+      "source": "/js/:path*",
+      "destination": "/frontend/js/:path*"
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "/frontend/assets/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://gallscan-ai-backend.onrender.com/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://gallscan-ai-backend.onrender.com/uploads/:path*"
+    }
+  ]
+}

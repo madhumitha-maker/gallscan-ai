@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — GallScan AI Diagnostic Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Injected Shared Clinical Disclaimer -->
+  <div id="disclaimer-root"></div>
+
+  <!-- Injected Shared Header Navigation & Mobile Drawer -->
+  <div id="navbar-root"></div>
+
+  <main class="main-content" style="display: flex; align-items: center; justify-content: center; padding: 48px 16px;">
+    <div class="card" style="width: 100%; max-width: 480px; padding: 32px 24px; box-shadow: var(--shadow-lg);">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="width: 48px; height: 48px; background: var(--secondary-teal); color: #ffffff; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto;">
+          <span class="material-symbols-outlined" style="font-size: 26px;">person_add</span>
+        </div>
+        <h2 style="font-size: 20px; margin-bottom: 6px;">Create Clinician Account</h2>
+        <p style="font-size: 13px; color: var(--text-muted);">Set up your profile to manage scans and Grad-CAM reports</p>
+      </div>
+
+      <div id="signupAlert" class="alert alert-error" style="display: none;"></div>
+
+      <form id="signupForm">
+        <div class="form-group">
+          <label class="form-label" for="signupName">Full Name & Title</label>
+          <input type="text" id="signupName" class="form-control" placeholder="Dr. Jane Doe, MD" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupEmail">Institutional Email</label>
+          <input type="email" id="signupEmail" class="form-control" placeholder="jane.doe@radiology.org" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupRole">Primary Role</label>
+          <select id="signupRole" class="form-control">
+            <option value="radiologist">Radiologist / Sonographer</option>
+            <option value="gastroenterologist">Gastroenterologist / HPB Surgeon</option>
+            <option value="researcher">Clinical AI Researcher</option>
+            <option value="resident">Medical Resident / Fellow</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupPassword">Create Password</label>
+          <input type="password" id="signupPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px; min-height: 44px;">
+          Create Account & Enter Console
+        </button>
+      </form>
+
+      <div style="margin-top: 24px; text-align: center; font-size: 13px; color: var(--text-muted); border-top: 1px solid var(--border-light); padding-top: 20px;">
+        Already registered? <a href="login.html" style="color: var(--secondary-teal); font-weight: 700; text-decoration: none;">Sign in here</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-disclaimer" style="text-align: center;">
+        GallScan AI &copy; 2026. For academic & research evaluation only.
+      </div>
+    </div>
+  </footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

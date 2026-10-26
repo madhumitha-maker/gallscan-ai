@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan History Archives — GallScan AI Diagnostic Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Injected Shared Clinical Disclaimer -->
+  <div id="disclaimer-root"></div>
+
+  <!-- Injected Shared Header Navigation & Mobile Drawer -->
+  <div id="navbar-root"></div>
+
+  <main class="main-content">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 6px;">Patient Archives</div>
+          <h1 style="font-size: 24px; color: var(--primary-navy);">Scan History & Diagnostic Logs</h1>
+          <p style="font-size: 14px; color: var(--text-muted);">Review past ultrasound classifications, model confidences, and Grad-CAM spatial overlays.</p>
+        </div>
+
+        <div>
+          <a href="upload.html" class="btn btn-primary btn-sm">
+            <span class="material-symbols-outlined">add</span> Analyze New Scan
+          </a>
+        </div>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="card" style="padding: 16px; margin-bottom: 20px;">
+        <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 240px; position: relative;">
+            <span class="material-symbols-outlined" style="position: absolute; left: 12px; top: 11px; color: var(--text-light);">search</span>
+            <input type="text" id="historySearchInput" class="form-control" placeholder="Search by scan filename or condition..." style="padding-left: 40px;">
+          </div>
+
+          <div style="min-width: 200px; flex: 1;">
+            <select id="historyClassFilter" class="form-control">
+              <option value="">All Pathology Classes (9)</option>
+              <option value="1Gallstones">1Gallstones</option>
+              <option value="2Abdomen and retroperitoneum">2Abdomen and retroperitoneum</option>
+              <option value="3cholecystitis">3cholecystitis</option>
+              <option value="4Membranous and gangrenous cholecystitis">4Membranous & gangrenous</option>
+              <option value="5Perforation">5Perforation</option>
+              <option value="6Polyps and cholesterol crystals">6Polyps & crystals</option>
+              <option value="7Adenomyomatosis">7Adenomyomatosis</option>
+              <option value="8Carcinoma">8Carcinoma</option>
+              <option value="9Various causes of gallbladder wall thickening">9Wall thickening</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-navy" id="historyTotalCount">0 Scans</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Table Container -->
+      <div id="historyTableContainer" class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Scan Identification</th>
+              <th>Primary AI Diagnosis</th>
+              <th>Confidence</th>
+              <th>Date Analyzed</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 0 4px;">
+        <span id="historyPageNum" class="mono-text" style="font-size: 13px; color: var(--text-muted);">Page 1</span>
+        <div style="display: flex; gap: 8px;">
+          <button id="prevPageBtn" class="btn btn-outline btn-sm" disabled>
+            <span class="material-symbols-outlined">chevron_left</span> Previous
+          </button>
+          <button id="nextPageBtn" class="btn btn-outline btn-sm" disabled>
+            Next <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="historyEmptyState" class="card" style="display: none; text-align: center; padding: 60px 24px; margin-top: 20px;">
+        <div style="width: 56px; height: 56px; background: var(--surface-low); color: var(--text-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+          <span class="material-symbols-outlined" style="font-size: 32px;">folder_open</span>
+        </div>
+        <h3 style="font-size: 18px; margin-bottom: 8px; color: var(--primary-navy);">No Archived Scans Found</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; max-width: 440px; margin-left: auto; margin-right: auto;">
+          You have not analyzed any ultrasound scans under this filter criteria.
+        </p>
+        <a href="upload.html" class="btn btn-primary">
+          <span class="material-symbols-outlined">upload_file</span> Upload First Scan
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-disclaimer" style="text-align: center;">
+        GallScan AI &copy; 2026. For academic & research evaluation only.
+      </div>
+    </div>
+  </footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>

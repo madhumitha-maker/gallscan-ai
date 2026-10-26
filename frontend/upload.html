@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Ultrasound Scan — GallScan AI Diagnostic Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Injected Shared Clinical Disclaimer -->
+  <div id="disclaimer-root"></div>
+
+  <!-- Injected Shared Header Navigation & Mobile Drawer -->
+  <div id="navbar-root"></div>
+
+  <main class="main-content">
+    <div class="container" style="max-width: 1100px;">
+      <div style="margin-bottom: 24px;">
+        <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 6px;">Diagnostic Pipeline</div>
+        <h1 style="font-size: 24px; margin-bottom: 8px;">Gallbladder Ultrasound Scan Analysis</h1>
+        <p style="font-size: 14px; color: var(--text-muted);">
+          Upload high-resolution B-mode abdominal ultrasound scans to generate 9-class probability distributions and real-time Grad-CAM heatmaps.
+        </p>
+      </div>
+
+      <div class="grid-2" style="grid-template-columns: 1.3fr 0.7fr; gap: 28px; align-items: start;">
+        <!-- Upload Form Card -->
+        <div class="card" style="box-shadow: var(--shadow-md);">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="material-symbols-outlined" style="color: var(--secondary-teal);">cloud_upload</span> Select Radiological Scan
+            </span>
+            <span class="badge badge-teal">CNN + ViT Model Ready</span>
+          </div>
+
+          <div id="uploadAlert" class="alert alert-error" style="display: none;"></div>
+
+          <form id="uploadForm">
+            <!-- Drag & Drop Box -->
+            <div id="dropZone" style="border: 2px dashed var(--border-dark); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; background: #ffffff; cursor: pointer; transition: all 0.2s ease;">
+              <div style="width: 52px; height: 52px; background: var(--secondary-teal-light); color: var(--secondary-teal); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto;">
+                <span class="material-symbols-outlined" style="font-size: 30px;">image</span>
+              </div>
+              <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--primary-navy);">
+                Drag & Drop Ultrasound Image Here
+              </h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+                or click to browse from clinical workstation
+              </p>
+              <span class="badge badge-navy">Supported: PNG, JPG, JPEG, WEBP (Max 20MB)</span>
+              <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Preview Card -->
+            <div id="previewContainer" style="display: none; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 16px; background: var(--surface-low); margin-bottom: 20px;">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <img id="previewImg" src="" alt="Scan Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-xs); border: 1px solid var(--border-dark);">
+                <div style="flex: 1;">
+                  <strong id="previewFileName" style="font-size: 14px; color: var(--primary-navy); display: block; margin-bottom: 4px;">scan.png</strong>
+                  <span id="previewFileSize" class="mono-text" style="font-size: 12px; color: var(--text-light);">0 KB</span>
+                  <div style="margin-top: 6px;">
+                    <span class="badge badge-teal">Ready for Inference</span>
+                  </div>
+                </div>
+                <button type="button" id="removeFileBtn" class="btn btn-danger btn-sm" title="Remove File">
+                  <span class="material-symbols-outlined">delete</span> Remove
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+              <label class="form-label" for="scanNotes">
+                Clinical Context & Radiologist Notes <span style="font-weight: 400; color: var(--text-light);">(Optional)</span>
+              </label>
+              <textarea id="scanNotes" class="form-control" placeholder="Patient age, right upper quadrant pain, Murphy sign, fast duration..."></textarea>
+            </div>
+
+            <!-- Progress Bar -->
+            <div id="uploadProgress" style="display: none; margin-bottom: 20px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                <span style="font-weight: 600; color: var(--secondary-teal);">Computing EfficientNet-B0 + ViT Fusion Embeddings...</span>
+                <span class="mono-text">Processing</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 100%; animation: pulse 1.5s infinite;"></div>
+              </div>
+            </div>
+
+            <button type="submit" id="submitUploadBtn" class="btn btn-accent btn-lg" style="width: 100%; min-height: 44px;" disabled>
+              <span class="material-symbols-outlined">analytics</span> Run Multimodal Analysis
+            </button>
+          </form>
+        </div>
+
+        <!-- Protocol & Acquisition Guidelines Card -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="card">
+            <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 12px;">Protocol Guidelines</div>
+            <h4 style="font-size: 15px; margin-bottom: 12px;">Scan Acquisition Standards</h4>
+            <ul style="list-style: none; font-size: 13px; color: var(--text-muted); line-height: 1.7;">
+              <li style="margin-bottom: 8px; display: flex; gap: 8px;">
+                <span class="material-symbols-outlined" style="color: var(--secondary-teal); font-size: 18px;">check_circle</span>
+                <span><strong>Modality:</strong> 2D B-mode ultrasound transducer (curvilinear 3.5–5.0 MHz).</span>
+              </li>
+              <li style="margin-bottom: 8px; display: flex; gap: 8px;">
+                <span class="material-symbols-outlined" style="color: var(--secondary-teal); font-size: 18px;">check_circle</span>
+                <span><strong>Orientation:</strong> Long-axis or transverse gallbladder views with mucosal wall focus.</span>
+              </li>
+              <li style="margin-bottom: 8px; display: flex; gap: 8px;">
+                <span class="material-symbols-outlined" style="color: var(--secondary-teal); font-size: 18px;">check_circle</span>
+                <span><strong>Preprocessing:</strong> Images will be normalized and resized to 224&times;224 RGB.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: #fff8eb; border-color: #f6e0b5;">
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+              <span class="material-symbols-outlined" style="color: var(--warning);">warning</span>
+              <div style="font-size: 12px; color: #744210; line-height: 1.5;">
+                <strong>Clinical Safety Warning:</strong>
+                Due to phenotypic overlap between acute and gangrenous cholecystitis, always review the top 3 differential predictions and spatial Grad-CAM activation zones.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-disclaimer" style="text-align: center;">
+        GallScan AI &copy; 2026. For academic & research evaluation only.
+      </div>
+    </div>
+  </footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

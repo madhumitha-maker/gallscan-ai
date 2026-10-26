@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Center — GallScan AI Diagnostic Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Injected Shared Clinical Disclaimer -->
+  <div id="disclaimer-root"></div>
+
+  <!-- Injected Shared Header Navigation & Mobile Drawer -->
+  <div id="navbar-root"></div>
+
+  <main class="main-content">
+    <div class="container" style="max-width: 860px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div class="label-caps" style="color: var(--secondary-teal); margin-bottom: 6px;">System Stream</div>
+          <h1 style="font-size: 24px; color: var(--primary-navy);">Notification Center</h1>
+          <p style="font-size: 14px; color: var(--text-muted);">Real-time alerts for completed scan analyses, Grad-CAM generation, and security notices.</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span id="notifUnreadBadgeCount" class="badge badge-navy">0 Unread</span>
+          <button id="markAllReadBtn" class="btn btn-outline btn-sm">
+            <span class="material-symbols-outlined">done_all</span> Mark All Read
+          </button>
+        </div>
+      </div>
+
+      <!-- Notifications List Container -->
+      <div id="notificationCenterList"></div>
+
+      <!-- Empty State -->
+      <div id="notifEmptyState" class="card" style="display: none; text-align: center; padding: 60px 24px;">
+        <div style="width: 56px; height: 56px; background: var(--surface-low); color: var(--text-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+          <span class="material-symbols-outlined" style="font-size: 32px;">notifications_none</span>
+        </div>
+        <h3 style="font-size: 18px; margin-bottom: 8px; color: var(--primary-navy);">All Caught Up</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">You have no new alerts or notifications at this time.</p>
+        <a href="upload.html" class="btn btn-primary btn-sm">
+          <span class="material-symbols-outlined">upload_file</span> Analyze a Scan
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-disclaimer" style="text-align: center;">
+        GallScan AI &copy; 2026. For academic & research evaluation only.
+      </div>
+    </div>
+  </footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>

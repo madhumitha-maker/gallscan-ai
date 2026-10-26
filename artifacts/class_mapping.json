@@ -1,0 +1,24 @@
+{
+  "idx2label": {
+    "0": "1Gallstones",
+    "1": "2Abdomen and retroperitoneum",
+    "2": "3cholecystitis",
+    "3": "4Membranous and gangrenous cholecystitis",
+    "4": "5Perforation",
+    "5": "6Polyps and cholesterol crystals",
+    "6": "7Adenomyomatosis",
+    "7": "8Carcinoma",
+    "8": "9Various causes of gallbladder wall thickening"
+  },
+  "label2idx": {
+    "1Gallstones": 0,
+    "2Abdomen and retroperitoneum": 1,
+    "3cholecystitis": 2,
+    "4Membranous and gangrenous cholecystitis": 3,
+    "5Perforation": 4,
+    "6Polyps and cholesterol crystals": 5,
+    "7Adenomyomatosis": 6,
+    "8Carcinoma": 7,
+    "9Various causes of gallbladder wall thickening": 8
+  }
+}
